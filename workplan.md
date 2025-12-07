@@ -65,6 +65,11 @@ Målet är att senast 20/12 ha hela kedjan fungerande minst en gång, även om U
 - Spara kontraktsadressen i ett dokument (t.ex. här eller i README).
 - Verifiera i block explorer att kontraktet finns (om möjligt).
 
+## Deployed contract
+
+- Network: Base Sepolia
+- Address: 0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a
+
 ### Dag 4 – Skapa frontend-skelett
 
 **Mål:** Ha en enkel React-app igång med grundlayout.
