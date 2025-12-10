@@ -1,3 +1,4 @@
+import { fetchWalletBalance } from './alchemyApi';
 import { useState } from 'react';
 import './App.css';
 
@@ -29,6 +30,10 @@ function App() {
     setLoading(true);
 
     try {
+      // 1. hmta data från Alchemy
+      const balanceData = await fetchWalletBalance(walletAddress);
+      console.log('Alchemy balance response:', balanceData);
+
       // TODO senare:
       // 1. hämta data från Alchemy
       // 2. räkna ut risk
