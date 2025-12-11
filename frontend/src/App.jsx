@@ -1,4 +1,5 @@
 import { fetchWalletBalance } from './alchemyApi';
+import { calculateRiskScore } from './riskScoring';
 import { useState } from 'react';
 import './App.css';
 
@@ -30,31 +31,15 @@ function App() {
     setLoading(true);
 
     try {
-      // 1. hmta data från Alchemy
+      // 1. Hämta data från Alchemy för den inskrivna adressen
       const balanceData = await fetchWalletBalance(walletAddress);
       console.log('Alchemy balance response:', balanceData);
 
-      // TODO senare:
-      // 1. hämta data från Alchemy
-      // 2. räkna ut risk
-      // 3. skriva till kontraktet
-      // 4. läsa av kontraktet
+      // 2. Räkna ut risk utifrån Alchemy-datan 
+      const { score, level, notes } = calculateRiskScore(balanceData);
 
-      // Mocka test just nu
-      const mockScore = 42;
-      const mockLevel =
-        mockScore < 30 ? 'Low' : mockScore < 70 ? 'Medium' : 'High';
-      const mockNotes = [
-        'Wallet is 3+ months old',
-        'Normal transaction activity',
-        'No obvious high risk pattern detected',
-      ];
-
-      setResult({
-        score: mockScore,
-        level: mockLevel,
-        notes: mockNotes,
-      });
+      // 3. Visa resultatet i UI:t
+      setResult({ score, level, notes });
     } catch (err) {
       console.error('Error:', err);
       setErrorMessage('Failed to check risk. Please try again.');

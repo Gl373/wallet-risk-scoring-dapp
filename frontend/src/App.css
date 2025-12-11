@@ -1,13 +1,17 @@
+html,
+body,
 #root {
   margin: 0;
   padding: 0;
+  height: 100%;
+  background: #0f172a; /* samma mörka bakgrund över hela sidan */
 }
 
 .page {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center; /* centrera kortet vertikalt i stället för högst upp */
   padding: 2rem;
   background: #0f172a; /* mörk bakgrund */
   color: #e5e7eb;
