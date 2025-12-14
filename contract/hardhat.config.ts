@@ -15,7 +15,6 @@ export default defineConfig({
     baseSepolia: {
       type: "http",
       url: ALCHEMY_BASE_SEPOLIA_URL || "",
-      // Lägg din privata nyckel i .env som PRIVATE_KEY (utan 0x-prefix går också bra)
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
     },
   },

@@ -37,3 +37,4 @@
 - Förbereda enkel felhantering/UX för on-chain-flödet (t.ex. väntar på transaktion, avbruten transaktion, felmeddelanden).
 
 
+I min förenklade scoring‑modell väljer jag att inte betrakta 0 ETH som “high risk”. En tom plånbok kan lika gärna vara ny eller inaktiv, och säger väldigt lite om beteende eller kopplingar till misstänkta adresser. Därför ger jag 0 ETH ett litet minus på risken (−10 poäng) och markerar den som “new or inactive account”, medan högre risk i stället kommer från andra faktorer (t.ex. väldigt låg balans eller andra regler jag kan lägga till senare).
