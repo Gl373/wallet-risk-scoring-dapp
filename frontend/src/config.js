@@ -1,7 +1,7 @@
 // Adress till det deployade WalletRiskScore-kontraktet på Base Sepolia
 export const CONTRACT_ADDRESS = '0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a';
 
-// Förenklad ABI för WalletRiskScore-kontraktet (endast de funktioner vi använder)
+// Förenklad ABI för WalletRiskScore-kontraktet (endast de funktioner som vi använder)
 export const CONTRACT_ABI = [
   {
     inputs: [

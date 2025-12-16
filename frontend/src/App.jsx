@@ -2,7 +2,14 @@ import { fetchWalletBalance } from './alchemyApi';
 import { calculateRiskScore } from './riskScoring';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from './config';
 import { useState } from 'react';
-import { useAccount, useConnect, useDisconnect, useWriteContract } from 'wagmi';
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  usePublicClient,
+  useReadContract,
+  useWriteContract,
+} from 'wagmi';
 import './App.css';
 
 function App() {
@@ -10,11 +17,35 @@ function App() {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [lastTxHash, setLastTxHash] = useState(null);
+  const [onChainScore, setOnChainScore] = useState(null);
+  // Enkel status som hjälper oss (och examinatorn) följa on-chain flödet steg för steg
+  const [onChainStatus, setOnChainStatus] = useState('Idle');
 
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { writeContractAsync } = useWriteContract();
+  const publicClient = usePublicClient();
+
+  // Read-hook för Dag 9:
+  // Vi läser score från kontraktet med getScore(wallet). Vi sätter enabled:false
+  // så den inte spam-läser på varje keypress. I stället refetchar vi manuellt
+  // direkt efter en setScore() (Alternativ A: read direkt efter write).
+  const readWalletArg = /^0x[a-fA-F0-9]{40}$/.test(walletAddress)
+    ? walletAddress
+    : '0x0000000000000000000000000000000000000000';
+
+  const {
+    refetch: refetchOnChainScore,
+    isFetching: isReadingOnChainScore,
+  } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'getScore',
+    args: [readWalletArg],
+    query: { enabled: false },
+  });
 
   function isValidAddress(address) {
     // enkel koll att adressen ser ut som en ETH-adress
@@ -24,6 +55,10 @@ function App() {
   const checkRiskForWallet = async () => {
     setErrorMessage('');
     setResult(null);
+    setOnChainStatus('Idle');
+    // Nollställ on-chain info för att UI:t inte ska visa gamla värden
+    setOnChainScore(null);
+    setLastTxHash(null);
 
     if (!walletAddress) {
       setErrorMessage('Please enter a wallet address');
@@ -51,6 +86,8 @@ function App() {
       const { score, level, notes } = calculateRiskScore(balanceData);
 
       // 3. Spara score on-chain i WalletRiskScore-kontraktet
+      // (Alternativ B: vi väntar på confirmation innan vi läser tillbaka med getScore)
+      setOnChainStatus('Waiting for wallet signature...');
       const txHash = await writeContractAsync({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
@@ -58,11 +95,35 @@ function App() {
         args: [walletAddress, BigInt(score)],
       });
       console.log('setScore tx hash:', txHash);
+      setLastTxHash(txHash);
 
-      // 4. Visa resultatet i UI:t
+      // 4. Dag 9 (Alternativ B): Vänta tills transaktionen är mined/confirmed.
+      // Varför: då kan vi direkt läsa rätt värde från kontraktet.
+      setOnChainStatus('Transaction sent. Waiting for confirmation...');
+      if (publicClient) {
+        await publicClient.waitForTransactionReceipt({ hash: txHash });
+      } else {
+        // Bör inte hända i normalfallet, men bra med en tydlig status för felsökning
+        setOnChainStatus('No RPC client available (cannot confirm tx)');
+      }
+
+      // 5. Läs on-chain score efter confirmation
+      setOnChainStatus('Confirmed. Reading stored score...');
+      const readResult = await refetchOnChainScore();
+      if (readResult?.data != null) {
+        setOnChainScore(readResult.data);
+        console.log('getScore (on-chain) result:', readResult.data);
+        // Visa "confirmed" först när vi faktiskt har läst tillbaka värdet.
+        setOnChainStatus('Stored score loaded ✅');
+      } else {
+        setOnChainStatus('Confirmed, but no score returned');
+      }
+
+      // 6. Visa resultatet i UI:t
       setResult({ score, level, notes });
     } catch (err) {
       console.error('Error:', err);
+      setOnChainStatus('Failed');
       setErrorMessage('Failed to check risk. Please try again.');
     } finally {
       setLoading(false);
@@ -159,8 +220,21 @@ function App() {
               <code>WalletRiskScore</code> contract on Base Sepolia via <code>setScore</code>.
             </p>
             <p>
-              Reading the stored score back into the UI is planned as a next step in the
-              prototype (on-chain read flow).
+              <strong>Status:</strong> {onChainStatus}
+            </p>
+            <p>
+              <strong>Last tx:</strong>{' '}
+              {lastTxHash
+                ? `${lastTxHash.slice(0, 10)}...${lastTxHash.slice(-8)}`
+                : 'N/A'}
+            </p>
+            <p>
+              <strong>Stored on-chain score:</strong>{' '}
+              {isReadingOnChainScore
+                ? 'Reading...'
+                : onChainScore != null
+                  ? `${onChainScore.toString()} / 100`
+                  : 'N/A'}
             </p>
           </div>
         </div>
