@@ -3,8 +3,9 @@ import { calculateRiskScore } from './riskScoring';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from './config';
 import { useState } from 'react';
 import {
-  useAccount,
   useConnect,
+  useConnection,
+  useConnectors,
   useDisconnect,
   usePublicClient,
   useReadContract,
@@ -28,7 +29,6 @@ function App() {
   const { writeContractAsync } = useWriteContract();
   const publicClient = usePublicClient();
 
-  // Read-hook för Dag 9:
   // Vi läser score från kontraktet med getScore(wallet). Vi sätter enabled:false
   // så den inte spam-läser på varje keypress. I stället refetchar vi manuellt
   // direkt efter en setScore() (Alternativ A: read direkt efter write).
