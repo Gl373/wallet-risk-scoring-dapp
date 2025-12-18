@@ -71,6 +71,16 @@ body,
   color: #9ca3af;
 }
 
+.success {
+  background: rgba(22, 163, 74, 0.18);
+  color: #dcfce7;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(22, 163, 74, 0.35);
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
 .label {
   display: block;
   margin-bottom: 0.25rem;
@@ -163,6 +173,24 @@ body,
   font-size: 0.85rem;
   color: #9ca3af;
   text-align: left;
+}
+
+.onchain-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.onchain-link {
+  color: #93c5fd;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(147, 197, 253, 0.55);
+}
+
+.onchain-link:hover {
+  color: #bfdbfe;
+  border-bottom-color: rgba(191, 219, 254, 0.9);
 }
 
 .placeholder {

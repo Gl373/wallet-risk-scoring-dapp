@@ -17,6 +17,19 @@ export function calculateRiskScore(alchemyData) {
       notes.push('Wallet has healthy balance (> 1 ETH)');
     }
 
+    // Extra (fortfarande enkel) regel: "normal" balans tenderar att vara lägre risk än extremt låg balans.
+    // Detta är en prototyp-regel och inte en riktig AML-modell.
+    if (balanceEth >= 0.05 && balanceEth <= 1) {
+      score -= 5;
+      notes.push('Wallet has a normal testnet balance (0.05–1 ETH)');
+    }
+
+    // Extra regel: väldigt hög balans kan vara "intressant" och får en liten risk-ökning (för demo-syfte).
+    if (balanceEth > 10) {
+      score += 5;
+      notes.push('Unusually high balance (> 10 ETH) – flagged for review');
+    }
+
     if (score < 0) score = 0;
     if (score > 100) score = 100;
 

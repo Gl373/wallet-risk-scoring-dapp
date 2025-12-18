@@ -14,7 +14,6 @@ Prototype dApp that calculates a simple, rule-based wallet risk score using Alch
 - **Contract**: `WalletRiskScore`
 - **Address**: `0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a`
 - **Basescan**: [`sepolia.basescan.org/address/0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a`](https://sepolia.basescan.org/address/0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a)
-- **Blockscout**: [`base-sepolia.blockscout.com/address/0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a`](https://base-sepolia.blockscout.com/address/0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a)
 
 ## Prerequisites
 
@@ -83,4 +82,4 @@ Open the app at `http://localhost:5173/`.
    - writes the score on-chain via `setScore`
    - waits for confirmation
    - reads the stored score back via `getScore`
-5. Verify the transaction and contract interaction in an explorer (Basescan/Blockscout).
+5. Verify the transaction and contract interaction in an explorer (Basescan).
