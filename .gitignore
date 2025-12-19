@@ -1,0 +1,15 @@
+# Ignore local secrets / env files
+.env
+.env.*
+
+# Ignore local daily logs (keep them local, not in git)
+DaillyLogg/
+
+# Ignore contract screenshots/images
+contract/img/
+
+# Ignore local work plans
+workplan.md
+workplan01.md
+
+

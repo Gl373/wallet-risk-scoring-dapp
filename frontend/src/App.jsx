@@ -1,4 +1,4 @@
-import { fetchWalletBalance } from './alchemyApi';
+import { fetchWalletBalance, fetchWalletTxCount } from './alchemyApi';
 import { calculateRiskScore } from './riskScoring';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from './config';
 import { useState } from 'react';
@@ -153,9 +153,14 @@ function App() {
       const balanceData = await fetchWalletBalance(walletAddress);
       debugLog('Alchemy balance response:', balanceData);
 
+      // Extra datapunkt (Alchemy): antal transaktioner (nonce) för adressen
+      const txCountData = await fetchWalletTxCount(walletAddress);
+      const txCount = parseInt(txCountData.result, 16);
+      debugLog('Alchemy txCount response:', txCountData, 'parsed:', txCount);
+
       // 2. Räkna ut risk utifrån Alchemy-datan 
       setAnalysisStatus('Calculating risk score...');
-      const { score, level, notes } = calculateRiskScore(balanceData);
+      const { score, level, notes } = calculateRiskScore(balanceData, txCount);
 
       // 3. Spara score on-chain i WalletRiskScore-kontraktet
       // (Alternativ B: vi väntar på confirmation innan vi läser tillbaka med getScore)
@@ -211,7 +216,7 @@ function App() {
       <div className='card'>
         <h1 className='title'>Wallet Risk Scoring dApp</h1>
         <p className='meta-subtitle'>
-          Prototype – testnet only (Base Sepolia). Educational use, not production risk assessment.
+          Prototype - testnet only (Base Sepolia). Educational use, not production risk assessment.
         </p>
 
         <div className='section meta-bar'>
