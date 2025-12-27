@@ -1,10 +1,5 @@
 const ALCHEMY_KEY = import.meta.env.VITE_ALCHEMY_API_KEY;
 
-console.log(
-  'Loaded VITE_ALCHEMY_API_KEY (frontend):',
-  ALCHEMY_KEY ? `${ALCHEMY_KEY.slice(0, 6)}...` : 'MISSING'
-);
-
 const ALCHEMY_URL = `https://base-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}`;
 
 export async function fetchWalletBalance(address) {

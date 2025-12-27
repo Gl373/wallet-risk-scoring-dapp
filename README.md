@@ -12,8 +12,8 @@ Prototype dApp that calculates a simple, rule-based wallet risk score using Alch
 
 - **Network**: Base Sepolia (chainId 84532)
 - **Contract**: `WalletRiskScore`
-- **Address**: `0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a`
-- **Basescan**: [`sepolia.basescan.org/address/0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a`](https://sepolia.basescan.org/address/0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a)
+- **Address**: `0x6c8f25A69e3516039d9DC1531afA2bFE292d6c05`
+- **Basescan**: [`sepolia.basescan.org/address/0x6c8f25A69e3516039d9DC1531afA2bFE292d6c05`](https://sepolia.basescan.org/address/0x6c8f25A69e3516039d9DC1531afA2bFE292d6c05)
 
 ## Prerequisites
 
@@ -58,7 +58,7 @@ npx hardhat run scripts/deploy.ts --network baseSepolia
 Verify (optional – enables explorer “Read/Write Contract” UI):
 
 ```bash
-npx hardhat verify --network baseSepolia 0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a
+npx hardhat verify --network baseSepolia 0x6c8f25A69e3516039d9DC1531afA2bFE292d6c05
 ```
 
 ### 2) Frontend

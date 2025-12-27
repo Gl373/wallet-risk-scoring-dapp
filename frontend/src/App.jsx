@@ -243,6 +243,8 @@ function App() {
                   setErrorMessage('No wallet connector found. Please install a web3 wallet extension.');
                   return;
                 }
+                // Connected wallet = den "user wallet" som signerar tx i dAppen (t.ex. setScore).
+                // Deployer-kontot för kontraktet är separat och används bara i Hardhat (contract/.env).
                 // connectWallet returnerar en Promise, men vi behöver inte await:a här
                 void connectWallet({ connector: firstConnector });
               }}>
