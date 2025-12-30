@@ -10,5 +10,8 @@ contract/img/
 
 # Ignore local work plans
 
+# Local study/exam notes (do not submit)
+study_notes/
+
 
 
