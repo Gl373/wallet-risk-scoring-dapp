@@ -19,8 +19,6 @@ export default defineConfig({
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
     },
   },
-  // Hardhat v3 + @nomicfoundation/hardhat-verify använder "verify"-config (inte "etherscan").
-  // Hardhat känner redan till Base Sepolia (chainId 84532) och kan därför välja Basescan automatiskt.
   verify: {
     etherscan: {
       apiKey: BASESCAN_API_KEY || "",

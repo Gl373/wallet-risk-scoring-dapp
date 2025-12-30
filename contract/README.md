@@ -40,7 +40,7 @@ npx hardhat run scripts/deploy.ts --network baseSepolia
 ## Verify (Basescan / explorer)
 
 ```bash
-npx hardhat verify --network baseSepolia 0x6c8f25A69e3516039d9DC1531afA2bFE292d6c05
+npx hardhat verify --network baseSepolia 0x2Dd80e4504E65c66a6Bc6871c238784817a0fE3a
 ```
 
 If the contract has no constructor arguments (this project), the address is enough.
