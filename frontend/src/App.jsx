@@ -15,7 +15,6 @@ import {
 import './App.css';
 
 function App() {
-  // Enkel "debug toggle": i dev (npm run dev) får vi loggar, i production blir det tyst.
   const DEBUG = import.meta.env.DEV;
   const debugLog = (...args) => {
     if (DEBUG) console.log(...args);
@@ -28,13 +27,10 @@ function App() {
   const [result, setResult] = useState(null);
   const [lastTxHash, setLastTxHash] = useState(null);
   const [onChainScore, setOnChainScore] = useState(null);
-  // Enkel status som hjälper oss (och examinatorn) följa on-chain flödet steg för steg
   const [onChainStatus, setOnChainStatus] = useState('Idle');
 
   const chainId = useChainId();
 
-  // wagmi v3: useAccount/connectAsync/disconnectAsync är markerade som deprecated aliases.
-  // Vi använder de rekommenderade API:erna för att slippa "överstruket" i editorn.
   const { address, isConnected } = useConnection();
   const connectors = useConnectors();
   const { mutateAsync: connectWallet } = useConnect();
@@ -77,12 +73,10 @@ function App() {
   }
 
   function getFriendlyErrorMessage(err) {
-    // Wagmi/viem ger ofta Error-objekt med olika former. Vi gör en enkel, tydlig mapping.
     const msg = (err && typeof err === 'object' && 'message' in err && err.message)
       ? String(err.message)
       : '';
 
-    // MetaMask/Coinbase: användaren klickade "Reject"/"Cancel"
     if (
       msg.toLowerCase().includes('user rejected') ||
       msg.toLowerCase().includes('user rejected the request') ||
@@ -120,7 +114,6 @@ function App() {
     setResult(null);
     setOnChainStatus('Idle');
     setAnalysisStatus('Idle');
-    // Nollställ on-chain info för att UI:t inte ska visa gamla värden
     setOnChainScore(null);
     setLastTxHash(null);
 

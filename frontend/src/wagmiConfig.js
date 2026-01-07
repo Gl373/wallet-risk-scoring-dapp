@@ -11,7 +11,6 @@ export const wagmiConfig = createConfig({
   chains: [baseSepolia],
   connectors: [injected()],
   transports: {
-    // Using an explicit RPC URL is generally more stable than relying on defaults.
     [baseSepolia.id]: http(BASE_SEPOLIA_RPC_URL),
   },
 });
